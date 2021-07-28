@@ -5,6 +5,16 @@ export default class Cube {
     constructor() {
         this.object = this.createMesh()
         this.cannon = this.createBody()
+
+        this.addEventListeners()
+    }
+
+    addEventListeners() {
+        window.addEventListener("keypress", e => {
+            if(e.key == " ") {
+                this.cannon.velocity.y = 100
+            }
+        })
     }
 
     createMesh() {
