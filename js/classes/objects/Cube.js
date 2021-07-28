@@ -22,7 +22,7 @@ export default class Cube {
         this.material = new THREE.MeshPhongMaterial({color: 0xff0000})
 
         const mesh = new THREE.Mesh(this.geometry, this.material)
-        mesh.position.y = 90
+        mesh.position.y = 75
         mesh.receiveShadow = true
         mesh.castShadow = true
         return mesh
@@ -41,11 +41,10 @@ export default class Cube {
 
         cube.position.copy(this.object.position)
 
-        const contactNormal = new CANNON.Vec3()
-
         cube.addEventListener("collide", e => {
-            console.log("dead")
-            
+            if(!this.dead) {
+                this.dead = true
+            }
             // const contact = e.contact
 
             // if (contact.bi.id == cube.id) {

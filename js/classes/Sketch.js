@@ -114,7 +114,7 @@ export default class Sketch {
         this.renderer.render(this.scene, this.camera)
 
         this.objects = this.objects.filter(object => {
-            if(object.dead) {
+            if(object.remove) {
                 this.remove(object)
                 return false
             }

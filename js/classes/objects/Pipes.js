@@ -15,10 +15,10 @@ export default class Pipes {
         this.object.position.y += this.geometry.parameters.height / 2
 
         if(this.cannon.position.x < -150) {
-            this.dead = true
+            this.remove = true
         }
 
-        if(this.cannon.position.x == 100 && !this.spawned) {
+        if(this.cannon.position.x == 125 && !this.spawned) {
             this.spawned = true
             sketch.add(new Pipes())
             // sketch.add(Pipe.createSet(this.initialPosition[0] + 75))
