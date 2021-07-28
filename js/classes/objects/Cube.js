@@ -12,13 +12,13 @@ export default class Cube {
     addEventListeners() {
         window.addEventListener("keypress", e => {
             if(e.key == " ") {
-                this.cannon.velocity.y = 50
+                this.cannon.velocity.y = 60
             }
         })
     }
 
     createMesh() {
-        this.geometry = new THREE.BoxGeometry(5, 5, 5)
+        this.geometry = new THREE.BoxGeometry(4, 4, 4)
         this.material = new THREE.MeshPhongMaterial({color: 0xff0000})
 
         const mesh = new THREE.Mesh(this.geometry, this.material)
@@ -43,20 +43,23 @@ export default class Cube {
 
         const contactNormal = new CANNON.Vec3()
 
-        // cube.addEventListener("collide", e => {
-        //     const contact = e.contact
+        cube.addEventListener("collide", e => {
+            console.log("dead")
+            
+            // const contact = e.contact
 
-        //     if (contact.bi.id == cube.id) {
-        //         contact.ni.negate(contactNormal)
-        //     } else {
-        //         contactNormal.copy(contact.ni)
-        //     }
+            // if (contact.bi.id == cube.id) {
+            //     contact.ni.negate(contactNormal)
+            // } else {
+            //     contactNormal.copy(contact.ni)
+            // }
 
-        //     if(contactNormal.dot(new CANNON.Vec3(0, 1, 0)) > 0.5) {
-        //         this.jump = true
-        //         // this.player.action = "idle"
-        //     }
-        // })
+            // if(contactNormal.dot(new CANNON.Vec3(0, 1, 0)) > 0.5) {
+                
+            //     // this.jump = true
+            //     // this.player.action = "idle"
+            // }
+        })
 
         return cube
     }

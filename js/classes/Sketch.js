@@ -7,7 +7,7 @@ export default class Sketch {
     objects = []
     clock = new THREE.Clock()
 
-    constructor({container=document.body, controls}={}) {
+    constructor({container=document.body, controls, debug}={}) {
         this.container = typeof container == "string" ? document.querySelector(container) : container
         this.dimensions = {width: this.container.offsetWidth, height: this.container.offsetHeight}
 
@@ -20,7 +20,9 @@ export default class Sketch {
             this.createControls()
         }
 
-        cannonDebugger(this.scene, this.world.bodies)
+        if(debug) {
+            cannonDebugger(this.scene, this.world.bodies)
+        }
 
         window.addEventListener("resize", this.resize.bind(this))
     }
@@ -30,14 +32,32 @@ export default class Sketch {
     }
 
     add(...objects) {
+        objects = objects.flat(Infinity)
+        
         for(const object of objects) {
             this.objects.push(object)
             this.scene.add(object.object || object)
 
             if(object.cannon) {
-                this.world.addBody(object.cannon)
+                if(Array.isArray(object.cannon)) {
+                    for(const c of object.cannon) {
+                        this.world.add(c)
+                    }
+                } else {
+                    this.world.addBody(object.cannon)
+                }
             }
         }
+    }
+
+    remove(object) {
+        this.scene.traverse(child => {
+            if(child.name == object.object?.name) {
+                this.scene.remove(object.object)
+            }
+        })
+
+        this.world.remove(object.cannon)
     }
     
     resize() {
@@ -65,13 +85,8 @@ export default class Sketch {
         const far = 1000
 
         this.camera = new THREE.PerspectiveCamera(fov, this.aspect, near, far)
-        // this.camera.position.set(50, 90, 50)
-        this.camera.position.set(0, 55, 100)
-        this.camera.lookAt(new THREE.Vector3(0, 0, 0))
-
-        document.body.addEventListener("click", e => {
-            console.log(this.camera.position)
-        })
+        this.camera.position.set(0, 40, 80)
+        this.camera.lookAt(new THREE.Vector3(0, 20, 0))
     }
     
     createRenderer() {
@@ -96,8 +111,17 @@ export default class Sketch {
         const delta = this.clock.getDelta()
         this.world.step(1 / 60, delta)
 
-
         this.renderer.render(this.scene, this.camera)
+
+        this.objects = this.objects.filter(object => {
+            if(object.dead) {
+                this.remove(object)
+                return false
+            }
+
+            return true
+        })
+        
 
         for(const object of this.objects) {
             if(typeof object.update == "function") {
