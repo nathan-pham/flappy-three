@@ -8,8 +8,8 @@ export default class Plane {
     }
 
     createMesh() {
-        this.geometry = new THREE.PlaneGeometry(100, 100)
-        this.material = new THREE.MeshLambertMaterial({color: 0xffffff, depthWrite: false})
+        this.geometry = new THREE.PlaneGeometry(200, 200)
+        this.material = new THREE.MeshPhongMaterial({color: 0xffffff, depthWrite: false})
 
         const mesh = new THREE.Mesh(this.geometry, this.material)
         mesh.rotation.x = -Math.PI / 2

@@ -12,14 +12,14 @@ export default class Cube {
     addEventListeners() {
         window.addEventListener("keypress", e => {
             if(e.key == " ") {
-                this.cannon.velocity.y = 100
+                this.cannon.velocity.y = 50
             }
         })
     }
 
     createMesh() {
         this.geometry = new THREE.BoxGeometry(5, 5, 5)
-        this.material = new THREE.MeshLambertMaterial({color: 0xff0000})
+        this.material = new THREE.MeshPhongMaterial({color: 0xff0000})
 
         const mesh = new THREE.Mesh(this.geometry, this.material)
         mesh.position.y = 90
@@ -32,7 +32,7 @@ export default class Cube {
         const {width, height, depth} = this.geometry.parameters
 
         const cube = new CANNON.Body({
-            mass: 75,
+            mass: 100,
             // linearDamping: 0.5,
             // angularDamping: 1.0,
             shape: new CANNON.Box(new CANNON.Vec3(width / 2, height / 2, depth / 2)) 

@@ -1,11 +1,11 @@
 import * as THREE from "https://esm.sh/three"
 import {OrbitControls} from "https://esm.sh/three/examples/jsm/controls/OrbitControls"
 import * as CANNON from "https://esm.sh/cannon"
+import cannonDebugger from "http://esm.sh/cannon-es-debugger"
 
 export default class Sketch {
     objects = []
     clock = new THREE.Clock()
-
 
     constructor({container=document.body, controls}={}) {
         this.container = typeof container == "string" ? document.querySelector(container) : container
@@ -19,6 +19,8 @@ export default class Sketch {
         if(controls) {
             this.createControls()
         }
+
+        cannonDebugger(this.scene, this.world.bodies)
 
         window.addEventListener("resize", this.resize.bind(this))
     }
@@ -63,8 +65,13 @@ export default class Sketch {
         const far = 1000
 
         this.camera = new THREE.PerspectiveCamera(fov, this.aspect, near, far)
-        this.camera.position.set(50, 90, 50)
+        // this.camera.position.set(50, 90, 50)
+        this.camera.position.set(0, 55, 100)
         this.camera.lookAt(new THREE.Vector3(0, 0, 0))
+
+        document.body.addEventListener("click", e => {
+            console.log(this.camera.position)
+        })
     }
     
     createRenderer() {
